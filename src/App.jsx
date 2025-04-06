@@ -6,20 +6,29 @@ import {articles} from "./Art.js";
 const title = "React Sorting articles";
 
 function App() {
-  const [data, setdata] = useState(articles);
+  // const [data, setdata] = useState(articles);
+  const [data, setdata] = useState(()=> ()=>{});
 
   const sortByUpvotes = () => {
-    const copy = [...data];
-    const sorted = copy.sort((a, b) => b.upvotes - a.upvotes);
-    setdata(sorted);
+    // const sorted = [...data].sort((a, b) => b.upvotes - a.upvotes);
+    // setdata(sorted);
+    
+    
+    setdata( () => (a, b) => b.upvotes - a.upvotes  )
   };
 
   const sortByDates = () => {
-    const copy = [...data];
-    const sorted = copy.sort(
-      (a, b) => new Date(b.date) - new Date(a.date)
-    );
-    setdata(sorted);
+    
+    // const sorted = [...data].sort(
+    //   (a, b) => new Date(b.date) - new Date(a.date)
+    // );
+    // setdata(sorted);
+     setdata( () => (a, b) => new Date(b.date) - new Date(a.date)  )
+  };
+
+  const res = () => {
+    // console.log('clicked sort vote ');
+    setdata( ()=> () => {} );
   };
 
   return (
@@ -45,9 +54,16 @@ function App() {
         >
           Most Recent
         </button>
+        <button
+          data-testid="most-recent-link"
+          className="btn"
+          onClick={res}
+        >
+          Original Order
+        </button>
       </div>
 
-      <Articles articles={data} />
+      <Articles articles={[...articles].sort(data)} />
     </div>
  
    </>
